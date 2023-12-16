@@ -1,0 +1,25 @@
+--- a/mac_ax/mac_8852b/pwr_seq_func_8852b.c
++++ b/mac_ax/mac_8852b/pwr_seq_func_8852b.c
+@@ -693,6 +698,11 @@ u32 mac_pwr_on_usb_8852b(void *vadapter)
+ 	adapter->sm.cmac0_func = MAC_AX_FUNC_ON;
+ #endif
+ 
++	/*0x2D8[7:4] = 4'b0001*/
++	val32 = MAC_REG_R32(R_AX_EECS_EESK_FUNC_SEL);
++	val32 = SET_CLR_WORD(val32, 0x1, B_AX_PINMUX_EESK_FUNC_SEL);
++	MAC_REG_W32(R_AX_EECS_EESK_FUNC_SEL, val32);
++
+ 	return MACSUCCESS;
+ }
+ 
+--- a/mac_ax/mac_8852b/pwr_seq_func_8852b.h
++++ b/mac_ax/mac_8852b/pwr_seq_func_8852b.h
+@@ -20,7 +20,7 @@
+ #include "../../mac_def.h"
+ #if MAC_AX_8852B_SUPPORT
+ 
+-#define PWR_SEQ_VER_8852B  17
++#define PWR_SEQ_VER_8852B  19
+ 
+ u32 mac_pwr_on_sdio_8852b(void *vadapter);
+ u32 mac_pwr_on_usb_8852b(void *vadapter);
